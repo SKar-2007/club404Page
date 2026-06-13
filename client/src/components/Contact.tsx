@@ -39,7 +39,7 @@ export default function Contact () {
             
             <div className="terminal-block mb-8 text-left max-w-2xl mx-auto cursor-default">
             <div className="text-neon-green">
-              $ club404 --connect
+              $ Club404-AU --connect
             </div>
             <div className="text-foreground mt-2">
               Initializing connection...
@@ -50,7 +50,7 @@ export default function Contact () {
           </div>
           
           <p className="font-mono text-lg text-muted-foreground mb-12 leading-relaxed cursor-default">
-            Ready to level up your coding skills? Join club404 and be part of 
+            Ready to level up your coding skills? Join club404-AU and be part of 
             Aliah University's most innovative tech community.
           </p>
           </motion.div>
