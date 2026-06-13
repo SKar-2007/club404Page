@@ -25,7 +25,7 @@ export default function About () {
               
               <div className="terminal-block mb-6">
                 <div className="text-foreground cursor-default">
-                  club404.init()
+                  Club404-AU.init()
                 </div>
               </div>
               

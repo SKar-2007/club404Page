@@ -32,7 +32,7 @@ export default function Header () {
              <motion.span 
               className="font-display font-bold text-xl text-primary"
               whileHover={{ scale: 1.05 }}
-            >club404</motion.span>
+            >Club404-AU</motion.span>
           </HashLink>
           </motion.div>
           
