@@ -14,15 +14,21 @@ The official website of **Club 404**, the coding club of Aliah University, New T
 
 ## Screenshots
 
-| Landing Page | Code Playground | Mini Games |
+| Landing Page | About | Services |
 |:---:|:---:|:---:|
-| ![Landing](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421351/Screenshot_278_l72nir.png) | ![Playground](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421334/Screenshot_279_wb0cxd.png) | ![Games](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421332/Screenshot_280_erhz14.png) |
+| ![Landing](screenshots/landing.png) | ![About](screenshots/about.png) | ![Services](screenshots/services.png) |
 
-| Events | Team | Contact |
+| Events | Code Golf | Mystery Output |
 |:---:|:---:|:---:|
-| ![Events](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421332/Screenshot_281_qzcgvc.png) | ![Team](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421351/Screenshot_278_l72nir.png) | ![Contact](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421334/Screenshot_279_wb0cxd.png) |
+| ![Events](screenshots/events.png) | ![Code Golf](screenshots/codegolf.png) | ![Mystery](screenshots/mystery.png) |
 
-> **Note:** Screenshots are from an earlier version. Replace with updated captures after deployment.
+| Playground | Mini Games | Hall of Fame |
+|:---:|:---:|:---:|
+| ![Playground](screenshots/playground.png) | ![Mini Games](screenshots/minigames.png) | ![Hall of Fame](screenshots/halloffame.png) |
+
+| Team | Contact |
+|:---:|:---:|
+| ![Team](screenshots/team.png) | ![Contact](screenshots/contact.png) |
 
 ---
 
