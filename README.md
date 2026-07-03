@@ -12,6 +12,20 @@ The official website of **Club 404**, the coding club of Aliah University, New T
 
 ---
 
+## Screenshots
+
+| Landing Page | Code Playground | Mini Games |
+|:---:|:---:|:---:|
+| ![Landing](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421351/Screenshot_278_l72nir.png) | ![Playground](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421334/Screenshot_279_wb0cxd.png) | ![Games](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421332/Screenshot_280_erhz14.png) |
+
+| Events | Team | Contact |
+|:---:|:---:|:---:|
+| ![Events](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421332/Screenshot_281_qzcgvc.png) | ![Team](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421351/Screenshot_278_l72nir.png) | ![Contact](https://res.cloudinary.com/dxkje9whm/image/upload/v1759421334/Screenshot_279_wb0cxd.png) |
+
+> **Note:** Screenshots are from an earlier version. Replace with updated captures after deployment.
+
+---
+
 ## Features
 
 - **Code Playground** — Write and run HTML/CSS/JS in a sandboxed editor with live preview
