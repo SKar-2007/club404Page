@@ -1,13 +1,84 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;700;900&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-concrete: hsl(var(--concrete));
+  --color-concrete-dark: hsl(var(--concrete-dark));
+  --color-electric: hsl(var(--electric));
+  --color-neon-green: hsl(var(--neon-green));
+  --color-cyber-blue: hsl(var(--cyber-blue));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
 
 @layer base {
   :root {
-    /* Club 404 Brand Colors - Black, Electric Blue, White */
+    /* Club 404 AU Brand Colors - Black, Electric Blue, White */
     --background: 0 0% 7%;
     --foreground: 0 0% 98%;
 
@@ -154,4 +225,127 @@
     content: "> ";
     @apply text-primary;
   }
+}
+
+/* ── Playground ─────────────────────────────────────── */
+
+.playground-window {
+  @apply bg-card border-4 border-foreground overflow-hidden;
+  box-shadow: var(--shadow-brutal);
+}
+
+.playground-titlebar {
+  @apply flex items-center justify-between px-4 py-3 bg-concrete border-b-2 border-foreground/20;
+}
+
+.playground-tabs {
+  @apply flex border-b-2 border-foreground/20 bg-concrete-dark;
+}
+
+.playground-tab {
+  @apply flex items-center gap-1.5 px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-muted-foreground transition-all duration-200 border-b-2 border-transparent;
+}
+
+.playground-tab:hover {
+  @apply text-foreground bg-concrete;
+}
+
+.playground-tab-active {
+  @apply text-electric border-electric bg-card;
+}
+
+.playground-editor-pane {
+  @apply flex-col w-full md:w-[45%] md:min-w-0;
+  min-height: 320px;
+}
+
+.playground-code-wrapper {
+  @apply relative flex-1 overflow-hidden;
+}
+
+.playground-line-numbers {
+  @apply absolute left-0 top-0 bottom-0 w-10 bg-concrete-dark text-muted-foreground/40 font-mono text-xs text-right pr-2 pt-3 select-none overflow-hidden;
+  line-height: 1.6;
+}
+
+.playground-textarea {
+  @apply w-full h-full resize-none bg-card text-foreground font-mono text-sm p-3 pl-12 outline-none border-none;
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+.playground-textarea::placeholder {
+  @apply text-muted-foreground/40;
+}
+
+.playground-preview-pane {
+  @apply flex-col flex-1 bg-white;
+  min-height: 320px;
+}
+
+.playground-preview-header {
+  @apply flex items-center justify-between px-3 py-1.5 bg-concrete border-b border-foreground/10;
+}
+
+.playground-console {
+  @apply bg-concrete-dark font-mono text-xs;
+}
+
+.playground-console-line {
+  @apply px-4 py-0.5 text-muted-foreground border-b border-foreground/5;
+  line-height: 1.8;
+}
+
+.playground-controls {
+  @apply flex items-center justify-between px-4 py-3 bg-concrete border-t-2 border-foreground/20;
+}
+
+.playground-lang-btn {
+  @apply flex items-center gap-2 px-3 py-1.5 bg-card border-2 border-foreground/30 rounded font-mono text-sm text-foreground transition-all duration-200 hover:border-electric hover:shadow-[0_0_10px_hsl(var(--electric)/0.3)];
+}
+
+.playground-lang-dropdown {
+  @apply absolute top-full left-0 mt-1 w-56 bg-card border-2 border-foreground/30 rounded shadow-lg z-50 overflow-hidden;
+  box-shadow: var(--shadow-harsh);
+}
+
+.playground-lang-option {
+  @apply w-full flex items-center gap-2.5 px-3 py-2 font-mono text-sm text-foreground transition-colors duration-150 hover:bg-electric/10 text-left;
+}
+
+.playground-lang-option-active {
+  @apply bg-electric/15 text-electric;
+}
+
+/* ── Easter Eggs ─────────────────────────────────────── */
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); filter: hue-rotate(0deg); }
+  10% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+  20% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
+  30% { transform: translate(2px, 2px); filter: hue-rotate(270deg); }
+  40% { transform: translate(2px, -2px); filter: hue-rotate(360deg); }
+  50% { transform: translate(-2px, 2px); }
+  60% { transform: translate(2px, -2px); }
+  70% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+  90% { transform: translate(-2px, 2px); }
+}
+
+.glitch-effect {
+  animation: glitch 0.5s ease-in-out;
+}
+
+@keyframes matrix-rain {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
+}
+
+.easter-egg-neon {
+  text-shadow: 0 0 10px hsl(var(--electric)), 0 0 20px hsl(var(--electric));
+}
+
+.easter-egg-retro {
+  font-family: var(--font-mono);
+  text-shadow: 0 0 5px currentColor;
 }

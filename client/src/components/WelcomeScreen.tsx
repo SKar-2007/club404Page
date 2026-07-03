@@ -220,7 +220,7 @@ const WelcomeScreen = ({ onComplete }: WelcomeScreenProps) => {
             >
               <div className="divider-brutal mb-6"></div>
               <p className="font-mono text-xl text-muted-foreground uppercase tracking-wider">
-                Club 404 • Aliah University
+                Club 404 AU • Aliah University
               </p>
               <p className="font-mono text-lg text-muted-foreground uppercase tracking-wider mt-2">
                 New Town, Kolkata

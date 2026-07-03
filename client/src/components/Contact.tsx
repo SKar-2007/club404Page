@@ -1,19 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { useToast } from "@/hooks/use-toast";
+import { HashLink } from "react-router-hash-link";
+import { LINKS } from "@/lib/config";
 
 export default function Contact () {
-
-  const { toast } = useToast();
-  const discordLink = "https://discord.gg/jSAkqbdeu7"
-
-  const handleComingSoon = (feature: string) => {
-    toast({
-      title: "Coming Soon!",
-      description: `${feature} will be listed soon`,
-      duration: 3000,
-    });
-  };
 
   return (
    <section id="contact" className="py-20 bg-concrete-dark relative overflow-hidden">
@@ -50,7 +40,7 @@ export default function Contact () {
           </div>
           
           <p className="font-mono text-lg text-muted-foreground mb-12 leading-relaxed cursor-default">
-            Ready to level up your coding skills? Join club404-AU and be part of 
+            Ready to level up your coding skills? Join Club 404 AU and be part of 
             Aliah University's most innovative tech community.
           </p>
           </motion.div>
@@ -87,7 +77,7 @@ export default function Contact () {
                 Connect
               </h3>
               <div className="font-mono text-muted-foreground space-y-2 cursor-text">
-                <div>Linkedin: Club 404 || Aliah University</div>
+                <div>LinkedIn: Club 404 AU || Aliah University</div>
                 <div>x: @club404aliah</div>
                 <div>Instagram: @club404aliah.official</div>
               </div>
@@ -118,23 +108,24 @@ export default function Contact () {
             transition={{ duration: 1.5, delay: 0.5 }}
             viewport={{ once: true }}
           >
-            <a href={discordLink} target="_blank" rel="noopener noreferrer">
+            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer">
             <Button className="btn-brutal text-lg px-8 py-4">
               Join Discord
             </Button>
             </a>
-            <Button 
-              variant="outline" 
-              className="font-mono font-bold uppercase tracking-wider bg-transparent border-4 border-foreground text-foreground hover:bg-foreground hover:text-background px-8 py-4"
-              onClick= { () => handleComingSoon("Upcoming events")}
+            <HashLink to="#events">
+              <Button
+                variant="outline"
+                className="font-mono font-bold uppercase tracking-wider bg-transparent border-4 border-foreground text-foreground hover:bg-foreground hover:text-background px-8 py-4"
               >
-              Upcoming Events
-            </Button>
+                Upcoming Events
+              </Button>
+            </HashLink>
           </motion.div>
           
           <div className="terminal-block mt-12 text-left max-w-xl mx-auto cursor-default">
             <div className="text-foreground">
-              {"> Welcome to club404"}
+              {"> Welcome to Club 404 AU"}
             </div>
             <div className="text-electric mt-1">
               {"> Error 404: Ordinary coders not found"}
