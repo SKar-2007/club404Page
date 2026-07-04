@@ -116,6 +116,15 @@ export default function Team() {
       image: "https://res.cloudinary.com/dxkje9whm/image/upload/v1758994011/hasnain_s3akfj.jpg",
       gender: "male"
     },
+    {
+      name: "Syed Tabrez",
+      expertise: "Socials/Management",
+      linkedin: "https://www.linkedin.com/in/syed-tabrez-868111294?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      github: "https://github.com/tabrezleo77",
+      accent: "electric",
+      image: "https://res.cloudinary.com/mhaguz7p/image/upload/f_auto,q_auto/myprofile_thj4sl",
+      gender: "male"
+    },  
      {
       name: "Saikat Kar",
       expertise: "Blockchain",
