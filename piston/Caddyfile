@@ -1,0 +1,41 @@
+# Club 404 AU — Production Reverse Proxy
+
+:80 {
+    header {
+        -Server
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+
+    # CORS for Vercel frontend
+    @cors_preflight {
+        method OPTIONS
+        path /api/piston/*
+    }
+    handle @cors_preflight {
+        header {
+            Access-Control-Allow-Origin "https://club404-page.vercel.app"
+            Access-Control-Allow-Methods "POST, OPTIONS"
+            Access-Control-Allow-Headers "Content-Type"
+            Access-Control-Max-Age "86400"
+        }
+        respond 204
+    }
+
+    handle_path /api/piston/* {
+        header {
+            Access-Control-Allow-Origin "https://club404-page.vercel.app"
+            Access-Control-Expose-Headers "Content-Type"
+        }
+        reverse_proxy piston-api:2000 {
+            header_up X-Real-IP {remote_host}
+        }
+    }
+
+    root * /srv/www
+    encode gzip
+    try_files {path} /index.html
+    file_server
+}

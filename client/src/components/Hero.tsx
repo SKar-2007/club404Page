@@ -1,21 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { HashLink } from "react-router-hash-link";
 import { motion } from "framer-motion"
+import { LINKS, IMAGES } from "@/lib/config";
 
 export default function Hero () {
-
-  const heroImage = "https://res.cloudinary.com/dxkje9whm/image/upload/v1758892770/hero-coding_l796ty.jpg"
-  const whatsAppLink = "https://chat.whatsapp.com/EOR7RBOol6AGHNf0IdhpZI";
-
-  const { toast } = useToast();
-
-  const handleComingSoon = (feature: string) => {
-    toast({
-      title: "Coming Soon!",
-      description: `${feature} will be listed soon`,
-      duration: 3000,
-    });
-  };
 
   return (
     <motion.section 
@@ -26,7 +14,7 @@ export default function Hero () {
         transition={{ duration: 1 }}>
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
+        style={{ backgroundImage: `url(${IMAGES.hero})` }}
       >
         <div className="absolute inset-0 bg-background/80"></div>
       </div>
@@ -62,7 +50,7 @@ export default function Hero () {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
-          <span className="text-neon-green cursor-default">~/aliah-university/club-404$</span>
+          <span className="text-neon-green cursor-default">~/aliah-university/club-404-au$</span>
           <span className="text-foreground cursor-default"> ls -la</span>
         </motion.div>
         
@@ -72,7 +60,7 @@ export default function Hero () {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.7 }}
         >
-          Club<span className="text-electric">404-AU</span>
+          Club<span className="text-electric"> 404 AU</span>
         </motion.h1>
         
          <motion.div 
@@ -118,18 +106,19 @@ export default function Hero () {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 1.6 }}
         >
-          <a href={whatsAppLink} target="_blank" rel="noopener noreferrer">
+          <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer">
           <Button className="btn-brutal text-lg px-8 py-4">
             Join The Club
           </Button>
           </a>
-          <Button 
-            variant="outline" 
-            className="font-mono font-bold uppercase tracking-wider bg-transparent border-4 border-foreground text-foreground hover:bg-foreground hover:text-background px-8 py-4"
-            onClick={() => handleComingSoon("Upcoming Events")}
+          <HashLink to="#events">
+            <Button
+              variant="outline"
+              className="font-mono font-bold uppercase tracking-wider bg-transparent border-4 border-foreground text-foreground hover:bg-foreground hover:text-background px-8 py-4"
             >
-            Upcoming Events
-          </Button>
+              Upcoming Events
+            </Button>
+          </HashLink>
         </motion.div>
       </motion.div>
     </motion.section>

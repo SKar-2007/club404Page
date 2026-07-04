@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Linkedin, Github } from "lucide-react";
+import { LinkedinIcon, GithubIcon } from "@/components/BrandIcons";
 import { Button } from "@/components/ui/button";
 
 export default function Team() {
@@ -306,7 +306,7 @@ export default function Team() {
                       className="bg-white/10 backdrop-blur-sm border-2 border-white/50 text-white hover:bg-white hover:text-black transition-all duration-300"
                       onClick={() => window.open(currentTeamMember.linkedin, '_blank')}
                     >
-                      <Linkedin className="w-4 h-4" />
+                      <LinkedinIcon className="w-4 h-4" />
                     </Button>
                     <Button
                       size="sm"
@@ -314,7 +314,7 @@ export default function Team() {
                       className="bg-white/10 backdrop-blur-sm border-2 border-white/50 text-white hover:bg-white hover:text-black transition-all duration-300"
                       onClick={() => window.open(currentTeamMember.github, '_blank')}
                     >
-                      <Github className="w-4 h-4" />
+                      <GithubIcon className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>

@@ -1,0 +1,59 @@
+services:
+  piston-api:
+    image: ghcr.io/engineer-man/piston
+    container_name: piston-api
+    privileged: true
+    ports:
+      - "2000:2000"
+    volumes:
+      - piston-packages:/piston/packages
+    restart: unless-stopped
+    environment:
+      - PISTON_PORT=2000
+      - PISTON_MEMORY_LIMIT=512m
+      - PISTON_TIMEOUT=30000
+      - PISTON_COMPILE_TIMEOUT=60000
+      - PISTON_RUN_TIMEOUT=30000
+      - PISTON_OUTPUT_MAX_SIZE=524288
+      - PISTON_MAX_PROCESS_COUNT=256
+      - PISTON_MAX_CONCURRENT_JOBS=50
+      - PISTON_DISABLE_NETWORKING=true
+      - PISTON_MAX_FILE_SIZE=52428800
+      - PISTON_MAX_OPEN_FILES=1024
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:2000/api/v2/runtimes', r => process.exit(r.statusCode===200?0:1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  caddy:
+    image: caddy:alpine
+    container_name: piston-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+      - ../client/dist:/srv/www:ro
+    restart: unless-stopped
+    depends_on:
+      piston-api:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 256M
+
+volumes:
+  piston-packages:
+  caddy-data:
+  caddy-config:
