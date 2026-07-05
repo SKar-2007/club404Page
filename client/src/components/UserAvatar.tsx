@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/use-auth";
 import UserRoleBadge from "./UserRoleBadge";
 import type { UserRole } from "@/lib/auth";
 

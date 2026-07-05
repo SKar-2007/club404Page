@@ -130,11 +130,3 @@ export const ROLE_CONFIG: Record<UserRole, RoleConfig> = {
     ],
   },
 };
-
-export function isRoleOrAbove(userRole: UserRole, requiredRole: UserRole): boolean {
-  return ROLE_HIERARCHY[userRole] >= ROLE_HIERARCHY[requiredRole];
-}
-
-export function hasPermission(role: UserRole, permission: Permission): boolean {
-  return ROLE_CONFIG[role].permissions.includes(permission);
-}

@@ -17,7 +17,4 @@ export const config = {
     achievementsBinId: env("VITE_HOF_ACHIEVEMENTS_BIN_ID"),
     leaderboardBinId: env("VITE_HOF_LEADERBOARD_BIN_ID"),
   },
-  piston: {
-    execUrl: env("VITE_PISTON_EXEC_URL"),
-  },
 } as const;

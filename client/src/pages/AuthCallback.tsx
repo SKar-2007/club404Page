@@ -6,17 +6,15 @@ export default function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
-        navigate("/", { replace: true });
-      } else {
         navigate("/", { replace: true });
       }
     });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         navigate("/", { replace: true });
       }
@@ -28,11 +26,11 @@ export default function AuthCallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center">
-        <div className="font-mono text-lg text-electric animate-pulse">
-          Authenticating...
+        <div className="font-mono text-lg text-primary animate-pulse">
+          Signing you in...
         </div>
         <div className="font-mono text-sm text-muted-foreground mt-2">
-          Please wait while we complete your login.
+          Redirecting shortly.
         </div>
       </div>
     </div>

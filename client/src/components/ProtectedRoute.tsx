@@ -72,9 +72,11 @@ export default function ProtectedRoute({
           <p className="font-mono text-sm text-muted-foreground mb-2">
             You need {roleLabel} access to use this feature.
           </p>
-          <p className="font-mono text-xs text-muted-foreground mb-6">
-            Current role: {ROLE_CONFIG[profile!.role].label}
-          </p>
+          {profile && (
+            <p className="font-mono text-xs text-muted-foreground mb-6">
+              Current role: {ROLE_CONFIG[profile.role].label}
+            </p>
+          )}
           <RequestAccessDialog />
         </motion.div>
       )
@@ -96,9 +98,11 @@ export default function ProtectedRoute({
           <p className="font-mono text-sm text-muted-foreground mb-2">
             You need {ROLE_CONFIG[role].label} role or above.
           </p>
-          <p className="font-mono text-xs text-muted-foreground mb-6">
-            Current role: {ROLE_CONFIG[profile!.role].label}
-          </p>
+          {profile && (
+            <p className="font-mono text-xs text-muted-foreground mb-6">
+              Current role: {ROLE_CONFIG[profile.role].label}
+            </p>
+          )}
           <RequestAccessDialog />
         </motion.div>
       )

@@ -20,7 +20,6 @@ interface CodeGolfChallengeProps {
   onSetDifficulty: (d: "easy" | "medium" | "hard") => void;
   onNext: () => void;
   onPrev: () => void;
-  onSelectChallenge: (id: string) => void;
 }
 
 const DIFFICULTY_CONFIG = {

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePlayground } from "@/hooks/use-playground";
 import { useCodeGolf } from "@/hooks/use-code-golf";
 import { useMystery } from "@/hooks/use-mystery";
+import { useAuth } from "@/hooks/use-auth";
 import MemeGenerator from "@/components/MemeGenerator";
 import MiniGames from "@/components/MiniGames";
 import { Button } from "@/components/ui/button";
@@ -55,6 +56,8 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [playgroundMode, setPlaygroundMode] = useState<PlaygroundMode>("playground");
+
+  const { isAuthenticated } = useAuth();
 
   // Code Golf hook
   const codeGolf = useCodeGolf();
@@ -358,7 +361,6 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
                       onSetDifficulty={codeGolf.setDifficulty}
                       onNext={codeGolf.nextChallenge}
                       onPrev={codeGolf.prevChallenge}
-                      onSelectChallenge={codeGolf.selectChallenge}
                     />
                   ) : (
                     <div className="card-brutal border-muted-foreground/20 p-8 text-center">
@@ -376,6 +378,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
                       charCount={codeGolf.charCount}
                       isRunning={codeGolf.isRunning}
                       username={codeGolf.username}
+                      isLoggedIn={isAuthenticated}
                       onCodeChange={codeGolf.setCode}
                       onRun={codeGolf.runCode}
                       onSubmit={codeGolf.submitCode}

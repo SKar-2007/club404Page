@@ -100,7 +100,7 @@ export default function MiniGames() {
 
       <HackerChecklist
         items={checklist}
-        completedCount={completedCount}
+        completedCount={checklist.filter((i) => i.completed).length}
         totalCount={checklist.length}
       />
     </div>

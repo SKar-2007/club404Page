@@ -8,6 +8,7 @@ interface CodeGolfEditorProps {
   charCount: number;
   isRunning: boolean;
   username: string;
+  isLoggedIn: boolean;
   onCodeChange: (code: string) => void;
   onRun: () => void;
   onSubmit: () => void;
@@ -20,6 +21,7 @@ export default function CodeGolfEditor({
   charCount,
   isRunning,
   username,
+  isLoggedIn,
   onCodeChange,
   onRun,
   onSubmit,
@@ -50,7 +52,7 @@ export default function CodeGolfEditor({
   };
 
   const handleSubmit = () => {
-    if (!username.trim()) {
+    if (!isLoggedIn && !username.trim()) {
       setShowUsernameInput(true);
       return;
     }

@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useAuth } from "@/hooks/use-auth";
 import {
   Challenge,
   Submission,
@@ -75,6 +76,7 @@ function getChallengesForToday(): Challenge[] {
 }
 
 export function useCodeGolf(): UseCodeGolfReturn {
+  const { profile } = useAuth();
   const [challenges, setChallenges] = useState<Challenge[]>(() =>
     getChallengesForToday()
   );
@@ -87,7 +89,10 @@ export function useCodeGolf(): UseCodeGolfReturn {
     status: "PASSED" | "FAILED" | "ERROR";
     output: string;
   } | null>(null);
-  const [username, setUsernameState] = useState(loadUsername);
+  const [username, setUsernameState] = useState(() => {
+    const stored = loadUsername();
+    return stored || "";
+  });
   const [timeRemaining, setTimeRemaining] = useState("");
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastDayRef = useRef(getISTDateString());
@@ -175,6 +180,14 @@ export function useCodeGolf(): UseCodeGolfReturn {
   }, []);
 
   const charCount = countChars(code);
+
+  // Auto-set username from auth profile
+  useEffect(() => {
+    if (profile?.full_name && !loadUsername()) {
+      setUsernameState(profile.full_name);
+      saveUsername(profile.full_name);
+    }
+  }, [profile?.full_name]);
 
   const setUsername = useCallback((name: string) => {
     setUsernameState(name);

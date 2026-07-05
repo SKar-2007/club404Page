@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef } from "react";
 import { LANGUAGES, getLanguageById, type LanguageDef } from "@/lib/languages";
-import { config } from "@/lib/env";
 
 export type PlaygroundTab = "html" | "css" | "javascript";
 
@@ -10,7 +9,6 @@ export interface PlaygroundState {
   isRunning: boolean;
   output: string[];
   code: string;
-  // Web mode has separate panes
   html: string;
   css: string;
   javascript: string;
@@ -49,54 +47,6 @@ async function loadPyodide(): Promise<{
   })();
 
   return pyodidePromise;
-}
-
-const PISTON_EXEC_URL = config.piston.execUrl;
-
-async function executePiston(
-  lang: string,
-  version: string,
-  code: string
-): Promise<string[]> {
-  const res = await fetch(PISTON_EXEC_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      language: lang,
-      version,
-      files: [{ content: code }],
-    }),
-  });
-
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || `Piston API error: ${res.status}`);
-  }
-
-  const data = await res.json();
-  const lines: string[] = [];
-
-  if (data.compile?.stderr) {
-    lines.push("× Compilation error:");
-    data.compile.stderr
-      .split("\n")
-      .filter(Boolean)
-      .forEach((l: string) => lines.push("  " + l));
-  }
-  if (data.run?.stdout) {
-    data.run.stdout
-      .split("\n")
-      .filter(Boolean)
-      .forEach((l: string) => lines.push("› " + l));
-  }
-  if (data.run?.stderr) {
-    data.run.stderr
-      .split("\n")
-      .filter(Boolean)
-      .forEach((l: string) => lines.push("× " + l));
-  }
-
-  return lines.length > 0 ? lines : ["(no output)"];
 }
 
 export function usePlayground() {
@@ -141,7 +91,6 @@ export function usePlayground() {
     []
   );
 
-  // Web mode: parse HTML/CSS/JS from single code block
   const parseWebCode = (raw: string) => {
     const htmlMatch = raw.match(/<!--[\s\S]*?HTML[\s\S]*?-->([\s\S]*?)(?=<style|<script|$)/i);
     const styleMatch = raw.match(/<style>([\s\S]*?)<\/style>/i);
@@ -161,7 +110,6 @@ export function usePlayground() {
 
     try {
       if (langDef.method === "iframe") {
-        // Web / JavaScript via iframe
         let html: string;
         let css: string;
         let js: string;
@@ -169,7 +117,6 @@ export function usePlayground() {
         if (state.languageId === "html-css-js") {
           ({ html, css, javascript: js } = parseWebCode(state.code));
         } else {
-          // JavaScript standalone
           html = "";
           css = "";
           js = state.code;
@@ -211,7 +158,6 @@ export function usePlayground() {
         await new Promise((r) => setTimeout(r, 100));
         setState((prev) => ({ ...prev, isRunning: false }));
       } else if (langDef.method === "pyodite") {
-        // Python via Pyodite
         const pyodide = await loadPyodide();
 
         pyodide.runPython(`
@@ -248,14 +194,6 @@ sys.stderr = _cap
             output: ["× " + errMsg],
           }));
         }
-      } else if (langDef.method === "piston") {
-        // Compiled languages via Piston API
-        const lines = await executePiston(
-          langDef.pistonLang,
-          langDef.pistonVersion,
-          state.code
-        );
-        setState((prev) => ({ ...prev, isRunning: false, output: lines }));
       }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);

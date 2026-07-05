@@ -120,25 +120,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [fetchProfile, fetchAllProfiles, fetchAccessRequests]);
 
   const loginWithGitHub = useCallback(async () => {
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+    if (error) throw error;
   }, []);
 
   const loginWithGoogle = useCallback(async () => {
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+    if (error) throw error;
   }, []);
 
   const logout = useCallback(async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
     setSession(null);
     setProfile(null);
     setAllProfiles([]);

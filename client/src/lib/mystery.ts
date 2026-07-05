@@ -175,7 +175,7 @@ export function buildSandboxHtml(html: string, css: string, js: string): string 
   ${html}
   <script>
     try { ${js} } catch(e) { console.error(e.message); }
-  <script>
+  </script>
 </body>
 </html>`;
 }
