@@ -349,3 +349,14 @@
   font-family: var(--font-mono);
   text-shadow: 0 0 5px currentColor;
 }
+
+/* ── Scrollbar Hide ─────────────────────────────────────── */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

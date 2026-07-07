@@ -4,6 +4,7 @@ import { usePlayground } from "@/hooks/use-playground";
 import { useCodeGolf } from "@/hooks/use-code-golf";
 import { useMystery } from "@/hooks/use-mystery";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsMobile, useOrientation } from "@/hooks/use-mobile";
 import MemeGenerator from "@/components/MemeGenerator";
 import MiniGames from "@/components/MiniGames";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,8 @@ import {
   Target,
   Code2,
   Crosshair,
+  ArrowLeft,
+  Maximize2,
 } from "lucide-react";
 
 type PlaygroundMode = "playground" | "codegolf" | "mystery" | "memes" | "games";
@@ -58,6 +61,12 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
   const [playgroundMode, setPlaygroundMode] = useState<PlaygroundMode>("playground");
 
   const { isAuthenticated } = useAuth();
+  const isMobile = useIsMobile();
+  const orientation = useOrientation();
+  const [showFullEditor, setShowFullEditor] = useState(false);
+
+  // Full view: landscape mode OR manual override
+  const isFullView = !isMobile || orientation === "landscape" || showFullEditor;
 
   // Code Golf hook
   const codeGolf = useCodeGolf();
@@ -189,10 +198,10 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
                 </span>
                 <span>$</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide">
                 <button
                   onClick={() => setPlaygroundMode("playground")}
-                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors whitespace-nowrap ${
                     playgroundMode === "playground"
                       ? "bg-electric text-black"
                       : "text-muted-foreground hover:text-foreground"
@@ -203,7 +212,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
                 </button>
                 <button
                   onClick={() => setPlaygroundMode("codegolf")}
-                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors whitespace-nowrap ${
                     playgroundMode === "codegolf"
                       ? "bg-neon-green text-black"
                       : "text-muted-foreground hover:text-foreground"
@@ -214,7 +223,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
                 </button>
                 <button
                   onClick={() => setPlaygroundMode("mystery")}
-                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors whitespace-nowrap ${
                     playgroundMode === "mystery"
                       ? "bg-cyber-blue text-black"
                       : "text-muted-foreground hover:text-foreground"
@@ -225,7 +234,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
                 </button>
                 <button
                   onClick={() => setPlaygroundMode("memes")}
-                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors whitespace-nowrap ${
                     playgroundMode === "memes"
                       ? "bg-yellow-400 text-black"
                       : "text-muted-foreground hover:text-foreground"
@@ -236,7 +245,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
                 </button>
                 <button
                   onClick={() => setPlaygroundMode("games")}
-                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                  className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors whitespace-nowrap ${
                     playgroundMode === "games"
                       ? "bg-red-400 text-black"
                       : "text-muted-foreground hover:text-foreground"
@@ -248,9 +257,49 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
               </div>
             </div>
 
+            {/* Compact view — portrait mode only, playground mode */}
+            {playgroundMode === "playground" && isMobile && orientation === "portrait" && !isFullView && (
+              <div className="px-4 py-8 text-center space-y-6">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-center gap-2">
+                    <Code2 className="w-5 h-5 text-electric" />
+                    <h3 className="font-mono text-sm font-bold text-foreground uppercase tracking-wider">
+                      Playground
+                    </h3>
+                  </div>
+                  <p className="font-mono text-xs text-muted-foreground max-w-xs mx-auto">
+                    Write and run code directly in your browser. Supports HTML/CSS/JS, JavaScript, and Python.
+                  </p>
+                </div>
+
+                <Button
+                  onClick={() => setShowFullEditor(true)}
+                  className="btn-brutal text-xs px-6 py-3 gap-2"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                  Open Full Editor
+                </Button>
+
+                <p className="font-mono text-[10px] text-muted-foreground/50">
+                  Or rotate your device to landscape for the full experience
+                </p>
+              </div>
+            )}
+
             {/* Language dropdown + controls bar — only show in playground mode */}
-            {playgroundMode === "playground" && (
+            {playgroundMode === "playground" && isFullView && (
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 px-4 py-2.5 bg-concrete-dark border-b-2 border-foreground/20">
+              {/* Back button — when in portrait override */}
+              {isMobile && showFullEditor && (
+                <button
+                  onClick={() => setShowFullEditor(false)}
+                  className="flex items-center gap-1.5 px-2 py-1 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  Back
+                </button>
+              )}
+
               {/* Dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -459,7 +508,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
             )}
 
             {/* Mobile view toggle */}
-            {playgroundMode === "playground" && (
+            {playgroundMode === "playground" && isFullView && (
             <div className="md:hidden flex border-b-2 border-foreground">
               <button
                 onClick={() => setMobileView("editor")}
@@ -485,7 +534,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
             )}
 
             {/* Main body — playground mode only */}
-            {playgroundMode === "playground" && (
+            {playgroundMode === "playground" && isFullView && (
             <div className="flex flex-col md:flex-row">
               {/* Editor pane */}
               <div
@@ -604,7 +653,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
             )}
 
             {/* Console output — web mode only, playground mode */}
-            {playgroundMode === "playground" && (isWebMode || isJsMode) && output.length > 0 && (
+            {playgroundMode === "playground" && isFullView && (isWebMode || isJsMode) && output.length > 0 && (
               <div className="border-t-2 border-foreground/20">
                 <div className="flex items-center gap-2 px-4 py-1.5 bg-concrete border-b border-foreground/10">
                   <Terminal className="w-3 h-3 text-neon-green" />
@@ -629,7 +678,7 @@ export default function Playground({ mode = "embedded" }: PlaygroundProps) {
             )}
 
             {/* Control bar — playground mode only */}
-            {playgroundMode === "playground" && (
+            {playgroundMode === "playground" && isFullView && (
             <div className="playground-controls">
               <div className="flex items-center gap-2">
                 <Button

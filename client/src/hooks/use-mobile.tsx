@@ -18,3 +18,25 @@ export function useIsMobile() {
 
   return !!isMobile;
 }
+
+export type Orientation = "portrait" | "landscape";
+
+export function useOrientation(): Orientation {
+  const [orientation, setOrientation] = React.useState<Orientation>(() => {
+    if (typeof window === "undefined") return "portrait";
+    return window.matchMedia("(orientation: portrait)").matches
+      ? "portrait"
+      : "landscape";
+  });
+
+  React.useEffect(() => {
+    const mql = window.matchMedia("(orientation: portrait)");
+    const onChange = () => {
+      setOrientation(mql.matches ? "portrait" : "landscape");
+    };
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
+  return orientation;
+}
