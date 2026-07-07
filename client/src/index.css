@@ -259,8 +259,15 @@
   min-height: 320px;
 }
 
+@media (max-width: 767px) {
+  .playground-editor-pane {
+    height: 45vh;
+    min-height: unset;
+  }
+}
+
 .playground-code-wrapper {
-  @apply relative flex-1 overflow-hidden;
+  @apply relative flex-1 overflow-hidden flex flex-col;
 }
 
 .playground-line-numbers {
@@ -269,9 +276,10 @@
 }
 
 .playground-textarea {
-  @apply w-full h-full resize-none bg-card text-foreground font-mono text-sm p-3 pl-12 outline-none border-none;
+  @apply w-full flex-1 resize-none bg-card text-foreground font-mono text-sm p-3 pl-12 outline-none border-none;
   line-height: 1.6;
   tab-size: 2;
+  overflow-y: auto;
 }
 
 .playground-textarea::placeholder {
@@ -281,6 +289,13 @@
 .playground-preview-pane {
   @apply flex-col flex-1 bg-white;
   min-height: 320px;
+}
+
+@media (max-width: 767px) {
+  .playground-preview-pane {
+    height: 45vh;
+    min-height: unset;
+  }
 }
 
 .playground-preview-header {
