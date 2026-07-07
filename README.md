@@ -44,6 +44,27 @@ The official website of **Club 404**, the coding club of Aliah University, New T
 - **Role-Based Auth** — Supabase authentication with super_admin, admin, moderator, member roles
 - **Admin Panel** — Manage events, challenges, and access requests
 - **Responsive Design** — Brutalist/cyberpunk aesthetic, works on all devices
+- **Mobile-First Playground** — Orientation-aware playground layout: compact view in portrait with "Open Full Editor" button, auto-switches to full editor in landscape mode, manual override available
+
+---
+
+## Mobile Playground
+
+The playground is optimized for mobile devices with orientation-aware behavior:
+
+| Mode | Behavior |
+|------|----------|
+| **Portrait** | Compact view with mode description + "Open Full Editor" button |
+| **Landscape** | Full playground with editor/output toggle automatically |
+| **Portrait + Override** | Full playground with Back button to return to compact view |
+
+### Implementation Details
+
+- `useOrientation()` hook — detects portrait/landscape via `matchMedia('(orientation: portrait)')`
+- `useIsMobile()` hook — detects screen width below 768px breakpoint
+- Editor pane uses absolute positioning for reliable textarea sizing on all devices
+- Title bar tabs are horizontally scrollable on narrow screens
+- Both editor and preview panes constrained to `45vh` on mobile for proper layout
 
 ---
 
@@ -147,6 +168,7 @@ club404Page/
 │   │   │   ├── use-code-golf.ts
 │   │   │   ├── use-events.ts
 │   │   │   ├── use-hall-of-fame.ts
+│   │   │   ├── use-mobile.tsx       # Mobile detection + orientation hooks
 │   │   │   ├── use-mystery.ts
 │   │   │   └── use-playground.ts
 │   │   ├── lib/                     # Utilities and configuration
