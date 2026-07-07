@@ -267,16 +267,16 @@
 }
 
 .playground-code-wrapper {
-  @apply relative flex-1 overflow-hidden flex flex-col;
+  @apply relative flex-1 overflow-hidden;
 }
 
 .playground-line-numbers {
-  @apply absolute left-0 top-0 bottom-0 w-10 bg-concrete-dark text-muted-foreground/40 font-mono text-xs text-right pr-2 pt-3 select-none overflow-hidden;
+  @apply absolute left-0 top-0 bottom-0 w-10 bg-concrete-dark text-muted-foreground/40 font-mono text-xs text-right pr-2 pt-3 select-none overflow-hidden z-10;
   line-height: 1.6;
 }
 
 .playground-textarea {
-  @apply w-full flex-1 resize-none bg-card text-foreground font-mono text-sm p-3 pl-12 outline-none border-none;
+  @apply absolute inset-0 resize-none bg-card text-foreground font-mono text-sm p-3 pl-12 outline-none border-none;
   line-height: 1.6;
   tab-size: 2;
   overflow-y: auto;
