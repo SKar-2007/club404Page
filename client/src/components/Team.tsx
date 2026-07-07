@@ -304,7 +304,7 @@ export default function Team() {
                       size="sm"
                       variant="outline"
                       className="bg-white/10 backdrop-blur-sm border-2 border-white/50 text-white hover:bg-white hover:text-black transition-all duration-300"
-                      onClick={() => window.open(currentTeamMember.linkedin, '_blank')}
+                      onClick={() => window.open(currentTeamMember.linkedin, '_blank', 'noopener,noreferrer')}
                     >
                       <LinkedinIcon className="w-4 h-4" />
                     </Button>
@@ -312,7 +312,7 @@ export default function Team() {
                       size="sm"
                       variant="outline"
                       className="bg-white/10 backdrop-blur-sm border-2 border-white/50 text-white hover:bg-white hover:text-black transition-all duration-300"
-                      onClick={() => window.open(currentTeamMember.github, '_blank')}
+                      onClick={() => window.open(currentTeamMember.github, '_blank', 'noopener,noreferrer')}
                     >
                       <GithubIcon className="w-4 h-4" />
                     </Button>

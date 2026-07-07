@@ -58,6 +58,11 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = "Chart";
 
+/**
+ * SAFETY: dangerouslySetInnerHTML is used here because CSS custom properties
+ * require dynamic injection. The input comes from hardcoded THEMES constants,
+ * not user input. Do NOT reuse this pattern with dynamic/user-supplied data.
+ */
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
 

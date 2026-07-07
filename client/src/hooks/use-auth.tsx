@@ -173,11 +173,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const changeUserRole = useCallback(
     async (userId: string, newRole: UserRole) => {
-      const { error } = await supabase
-        .from("profiles")
-        .update({ role: newRole })
-        .eq("id", userId);
+      // Use server-side function for secure role changes
+      const { data, error } = await supabase.rpc("change_user_role", {
+        target_user_id: userId,
+        new_role: newRole,
+      });
       if (error) throw error;
+      if (data && !data.success) {
+        throw new Error(data.error || "Failed to change role");
+      }
       await fetchAllProfiles();
     },
     [fetchAllProfiles]
@@ -199,45 +203,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const approveRequest = useCallback(
     async (requestId: string) => {
-      const request = accessRequests.find((r) => r.id === requestId);
-      if (!request) return;
-
-      const { error: updateError } = await supabase
-        .from("access_requests")
-        .update({
-          status: "approved",
-          reviewed_by: session?.user?.id,
-          reviewed_at: new Date().toISOString(),
-        })
-        .eq("id", requestId);
-      if (updateError) throw updateError;
-
-      const { error: roleError } = await supabase
-        .from("profiles")
-        .update({ role: request.requested_role })
-        .eq("id", request.user_id);
-      if (roleError) throw roleError;
-
+      // Use server-side function for secure approval
+      const { data, error } = await supabase.rpc("approve_access_request", {
+        request_id: requestId,
+      });
+      if (error) throw error;
+      if (data && !data.success) {
+        throw new Error(data.error || "Failed to approve request");
+      }
       await fetchAccessRequests();
       await fetchAllProfiles();
     },
-    [accessRequests, session, fetchAccessRequests, fetchAllProfiles]
+    [fetchAccessRequests, fetchAllProfiles]
   );
 
   const rejectRequest = useCallback(
     async (requestId: string) => {
-      const { error } = await supabase
-        .from("access_requests")
-        .update({
-          status: "rejected",
-          reviewed_by: session?.user?.id,
-          reviewed_at: new Date().toISOString(),
-        })
-        .eq("id", requestId);
+      // Use server-side function for secure rejection
+      const { data, error } = await supabase.rpc("reject_access_request", {
+        request_id: requestId,
+      });
       if (error) throw error;
+      if (data && !data.success) {
+        throw new Error(data.error || "Failed to reject request");
+      }
       await fetchAccessRequests();
     },
-    [session, fetchAccessRequests]
+    [fetchAccessRequests]
   );
 
   const pendingRequests = accessRequests.filter((r) => r.status === "pending");

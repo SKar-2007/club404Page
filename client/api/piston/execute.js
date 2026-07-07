@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { execSync, execFileSync } from "child_process";
 import vm from "vm";
 import fs from "fs";
 import path from "path";
@@ -7,6 +7,7 @@ import os from "os";
 const rateLimit = new Map();
 const RATE_LIMIT_WINDOW = 60_000;
 const RATE_LIMIT_MAX = 20;
+const MAX_CODE_SIZE = 10 * 1024; // 10KB limit
 
 function checkRateLimit(ip) {
   const now = Date.now();
@@ -20,12 +21,17 @@ function checkRateLimit(ip) {
   return true;
 }
 
+// Clean up stale entries periodically
 setInterval(() => {
   const now = Date.now();
   for (const [ip, entry] of rateLimit) {
     if (now - entry.start > RATE_LIMIT_WINDOW * 2) rateLimit.delete(ip);
   }
 }, 60_000);
+
+function sanitizeClassName(name) {
+  return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name) ? name : "Main";
+}
 
 function runInSandbox(code, timeout = 10000) {
   let stdout = "";
@@ -144,7 +150,7 @@ const LANGUAGE_HANDLERS = {
     ".cpp"),
   java: (code) => {
     const { tmpDir } = writeTempFile(code, ".java");
-    const className = (code.match(/class\s+(\w+)/) || [])[1] || "Main";
+    const className = sanitizeClassName((code.match(/class\s+(\w+)/) || [])[1] || "Main");
     try {
       const compile = execCommand(`javac ${path.join(tmpDir, `${className}.java`)}`, tmpDir);
       if (compile.stderr) return makeResult("", "", compile.stderr);
@@ -192,9 +198,11 @@ const LANGUAGE_HANDLERS = {
 };
 
 export default async function handler(req, res) {
-  const allowed = process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "*";
+  const productionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (!productionUrl) {
+    return res.status(500).json({ error: "Server configuration error: missing production URL" });
+  }
+  const allowed = `https://${productionUrl}`;
 
   res.setHeader("Access-Control-Allow-Origin", allowed);
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -219,6 +227,10 @@ export default async function handler(req, res) {
   const code = files[0]?.content;
   if (!code) {
     return res.status(400).json({ error: "No code provided" });
+  }
+
+  if (code.length > MAX_CODE_SIZE) {
+    return res.status(400).json({ error: `Code exceeds maximum size of ${MAX_CODE_SIZE / 1024}KB` });
   }
 
   const pistonUrl = process.env.PISTON_API_URL;
@@ -264,7 +276,7 @@ export default async function handler(req, res) {
     const result = handler(code);
     return res.status(200).json(result);
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = err instanceof Error ? "Execution error" : "Unknown error";
     return res.status(200).json({
       run: { stdout: "", stderr: msg, output: msg, code: 1, signal: null },
     });

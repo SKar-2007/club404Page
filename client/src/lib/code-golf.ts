@@ -437,10 +437,10 @@ export function executeInSandbox(
   try {
     ${code}
     setTimeout(() => {
-      window.parent.postMessage({ type: 'golf-output', output: _output.join('\\n') }, '*');
+      window.parent.postMessage({ type: 'golf-output', output: _output.join('\\n') }, window.location.origin);
     }, 100);
   } catch(e) {
-    window.parent.postMessage({ type: 'golf-output', output: _output.join('\\n'), error: e.message }, '*');
+    window.parent.postMessage({ type: 'golf-output', output: _output.join('\\n'), error: e.message }, window.location.origin);
   }
 })();
 </script>
